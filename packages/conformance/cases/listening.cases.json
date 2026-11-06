@@ -1,0 +1,574 @@
+{
+  "cases": [
+    {
+      "name": "fester-ablauf",
+      "description": "Listen: laden → Lesezeit → Wiedergabe → Pause → Wiedergabe → Nachbearbeitung → gesperrt; heard() zählt Wiedergaben; solange er läuft, keine Navigation (semantik.md, Abschnitte 13 und 14 „Protokoll“).",
+      "item": "hoeren",
+      "steps": [
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "loading"
+            },
+            "playing": [
+              false
+            ],
+            "heard": 0,
+            "locked": false,
+            "navigation": false
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ready"
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "reading"
+            },
+            "timers": [
+              {
+                "running": true,
+                "remaining": 30000
+              },
+              {
+                "running": false
+              },
+              {
+                "running": false
+              }
+            ]
+          }
+        },
+        {
+          "advance": 10000
+        },
+        {
+          "expect": {
+            "timers": [
+              {
+                "remaining": 20000
+              },
+              {},
+              {}
+            ]
+          }
+        },
+        {
+          "advance": 20000
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "playing",
+              "/Listen#0.play": 1
+            },
+            "playing": [
+              true
+            ]
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ended"
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "pausing"
+            },
+            "timers": [
+              {
+                "running": false
+              },
+              {
+                "running": true,
+                "remaining": 10000
+              },
+              {}
+            ],
+            "heard": 1,
+            "playing": [
+              false
+            ]
+          }
+        },
+        {
+          "advance": 10000
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "playing",
+              "/Listen#0.play": 2
+            },
+            "responses": {
+              "variables": {
+                "why": {
+                  "displayed": false
+                }
+              }
+            }
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ended"
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "finishing"
+            },
+            "timers": [
+              {},
+              {},
+              {
+                "running": true,
+                "remaining": 60000
+              }
+            ],
+            "heard": 2,
+            "responses": {
+              "variables": {
+                "why": {
+                  "displayed": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "emit": {
+            "element": "input",
+            "index": 0
+          },
+          "event": "bind",
+          "value": "Schweden"
+        },
+        {
+          "advance": 60000
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "done"
+            },
+            "locked": true,
+            "navigation": true
+          }
+        },
+        {
+          "emit": {
+            "element": "input",
+            "index": 0
+          },
+          "event": "bind",
+          "value": "Finnland"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "where": {
+                  "value": "Schweden",
+                  "changed": true
+                }
+              }
+            },
+            "log": [
+              "media.ready",
+              "timer.start",
+              "timer.elapsed",
+              "media.ended",
+              {
+                "event": "timer.start",
+                "path": "/Listen#0/timer#1"
+              },
+              "timer.elapsed",
+              "media.ended",
+              "timer.start",
+              "input.bind",
+              "timer.elapsed",
+              "input.bind.locked"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "verlaengerte-zeit",
+      "description": "extended_time verlängert die Uhren (Lesezeit, Pause, Nachbearbeitung) um 1,5 (einzelne Aufgabe), nicht die Wiedergabe (semantik.md, Abschnitte 11 „Darstellungsanpassungen“ und 13).",
+      "item": "hoeren",
+      "accommodations": [
+        "extended_time"
+      ],
+      "steps": [
+        {
+          "media": 0,
+          "signal": "ready"
+        },
+        {
+          "expect": {
+            "timers": [
+              {
+                "running": true,
+                "remaining": 45000,
+                "duration": 45000
+              },
+              {},
+              {}
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "abbruch",
+      "description": "Nach einem Abbruch läuft eine Uhr mit der Restzeit beim Speichern weiter; eine unterbrochene Wiedergabe soll wieder laufen (von vorn, die Runtime meldet playing) und zählt erst an ihrem Ende (semantik.md, Abschnitt 13).",
+      "item": "hoeren",
+      "steps": [
+        {
+          "media": 0,
+          "signal": "ready"
+        },
+        {
+          "advance": 12000
+        },
+        {
+          "restore": true
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "reading"
+            },
+            "timers": [
+              {
+                "running": true,
+                "remaining": 18000
+              },
+              {},
+              {}
+            ]
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ready"
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "reading"
+            }
+          }
+        },
+        {
+          "advance": 18000
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "playing"
+            },
+            "playing": [
+              true
+            ]
+          }
+        },
+        {
+          "restore": true
+        },
+        {
+          "expect": {
+            "state": {
+              "/Listen#0.phase": "playing"
+            },
+            "playing": [
+              true
+            ],
+            "heard": 0
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ended"
+        },
+        {
+          "expect": {
+            "heard": 1,
+            "state": {
+              "/Listen#0.phase": "pausing"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "selbst-starten",
+      "description": "Play: jede Wiedergabe startet die Person (höchstens plays-mal); keine Uhr, keine Sperre, Navigation frei (semantik.md, Abschnitte 7 und 13).",
+      "item": "selbst",
+      "steps": [
+        {
+          "expect": {
+            "playing": [
+              false
+            ],
+            "navigation": true,
+            "elements": [
+              {
+                "element": "toggle",
+                "index": 0,
+                "args": {
+                  "disabled": false
+                }
+              }
+            ]
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 0
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "playing": [
+              true
+            ]
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ended"
+        },
+        {
+          "expect": {
+            "playing": [
+              false
+            ],
+            "heard": 1
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 0
+          },
+          "event": "check"
+        },
+        {
+          "media": 0,
+          "signal": "ended"
+        },
+        {
+          "expect": {
+            "heard": 2,
+            "locked": false,
+            "elements": [
+              {
+                "element": "toggle",
+                "index": 0,
+                "args": {
+                  "disabled": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 0
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "playing": [
+              false
+            ]
+          }
+        },
+        {
+          "emit": {
+            "element": "input",
+            "index": 0
+          },
+          "event": "bind",
+          "value": "Schweden"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "where": {
+                  "value": "Schweden"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "im-testheft",
+      "description": "Während des Hörtexts keine Navigation; danach geht es von selbst weiter (flow advance); eine Pause der Testleitung wartet bis dahin (semantik.md, Abschnitte 12 und 13).",
+      "booklet": "hoerheft",
+      "steps": [
+        {
+          "expect": {
+            "current": "hoeren",
+            "canNext": false,
+            "canPrevious": false
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ready"
+        },
+        {
+          "advance": 30000
+        },
+        {
+          "control": {
+            "kind": "pause"
+          }
+        },
+        {
+          "expect": {
+            "paused": false,
+            "playing": [
+              true
+            ]
+          }
+        },
+        {
+          "next": true
+        },
+        {
+          "expect": {
+            "current": "hoeren"
+          }
+        },
+        {
+          "media": 0,
+          "signal": "ended"
+        },
+        {
+          "advance": 10000
+        },
+        {
+          "media": 0,
+          "signal": "ended"
+        },
+        {
+          "advance": 60000
+        },
+        {
+          "expect": {
+            "current": "danach",
+            "position": {
+              "part": 0,
+              "entry": 1
+            },
+            "paused": true,
+            "log": [
+              "control.pause.deferred",
+              {
+                "event": "flow.advance",
+                "value": "hoeren"
+              },
+              "control.pause"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "uhr-allgemein",
+      "description": "timer außerhalb von Listen: zählt nur, solange die Aufgabe zu sehen ist; elapsed einmal; flow sperrt danach (semantik.md, Abschnitte 12 und 13).",
+      "booklet": "zeitheft",
+      "steps": [
+        {
+          "expect": {
+            "current": "zeit",
+            "timers": [
+              {
+                "running": true,
+                "remaining": 120000
+              }
+            ],
+            "locked": false
+          }
+        },
+        {
+          "advance": 60000
+        },
+        {
+          "control": {
+            "kind": "pause"
+          }
+        },
+        {
+          "advance": 600000
+        },
+        {
+          "expect": {
+            "paused": true,
+            "timers": [
+              {
+                "remaining": 60000
+              }
+            ]
+          }
+        },
+        {
+          "control": {
+            "kind": "resume"
+          }
+        },
+        {
+          "advance": 60000
+        },
+        {
+          "expect": {
+            "locked": true,
+            "timers": [
+              {
+                "running": true,
+                "remaining": 0
+              }
+            ]
+          }
+        },
+        {
+          "emit": {
+            "element": "input",
+            "index": 0
+          },
+          "event": "bind",
+          "value": "42"
+        },
+        {
+          "expect": {
+            "responses": {
+              "zeit": {
+                "variables": {
+                  "result": {
+                    "value": "",
+                    "changed": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

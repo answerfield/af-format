@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "packages/bundle"
+    },
+    {
+      "path": "packages/conformance"
+    },
+    {
+      "path": "packages/expr"
+    }
+  ]
+}

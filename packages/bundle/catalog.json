@@ -1,0 +1,647 @@
+{
+  "version": "0.1",
+  "baseTypes": [
+    {
+      "name": "Int",
+      "description": "Ganze Zahl, die überall stehen kann, wo eine rationale Zahl erwartet wird."
+    },
+    {
+      "name": "Rational",
+      "description": "Exakte rationale Zahl, geschrieben als ganze Zahl, Dezimalzahl oder Bruch."
+    },
+    {
+      "name": "Text",
+      "description": "Zeichenkette, etwa die Eingabe in ein Textfeld."
+    },
+    {
+      "name": "Bool",
+      "description": "Wahrheitswert wahr oder falsch."
+    },
+    {
+      "name": "Content",
+      "description": "Darstellbarer Inhalt aus Text, Zahlen, Auszeichnungen, Bildern und Formeln."
+    },
+    {
+      "name": "Size",
+      "description": "Länge für die Darstellung mit einer Einheit wie em."
+    },
+    {
+      "name": "Duration",
+      "description": "Zeitspanne mit der Einheit ms, s oder min."
+    },
+    {
+      "name": "Point",
+      "description": "Punkt einer Ebene mit rationalen Koordinaten x und y."
+    },
+    {
+      "name": "Coding",
+      "description": "Kodierregel einer Antwort oder Teilaufgabe."
+    },
+    {
+      "name": "Code",
+      "description": "Einzelner Code einer Kodierregel."
+    },
+    {
+      "name": "List",
+      "typeParameters": ["T"],
+      "description": "Geordnete Liste von Werten desselben Typs, deren Stellen ab 1 zählen."
+    },
+    {
+      "name": "Set",
+      "typeParameters": ["T"],
+      "description": "Menge von Werten desselben Typs ohne Reihenfolge und ohne Wiederholung."
+    },
+    {
+      "name": "Collection",
+      "typeParameters": ["T"],
+      "description": "Liste oder Menge, vor allem in Signaturen eingebauter Funktionen."
+    },
+    {
+      "name": "Interval",
+      "typeParameters": ["T"],
+      "description": "Bereich zwischen zwei Zahlen, dessen Elementtyp ohne Typargument Rational ist."
+    }
+  ],
+  "enums": [
+    {
+      "name": "ToggleRole",
+      "values": ["checkbox", "radio", "switch", "button"],
+      "description": "Rolle eines Schalters für Bedienung und Screenreader."
+    },
+    {
+      "name": "GroupRole",
+      "values": ["group", "radiogroup"],
+      "description": "Rolle einer Gruppe von Bedienelementen."
+    },
+    {
+      "name": "ValueRole",
+      "values": ["slider", "spinbutton"],
+      "description": "Rolle eines verschiebbaren Werts."
+    },
+    {
+      "name": "Tone",
+      "values": ["neutral", "hint", "warning", "accent"],
+      "description": "Semantischer Ton eines Blocks, dessen Aussehen das Theme bestimmt."
+    },
+    {
+      "name": "Side",
+      "values": ["start", "end"],
+      "description": "Seite, an der ein Block in einer Spalte steht."
+    },
+    {
+      "name": "Navigation",
+      "values": ["free", "forward"],
+      "description": "Navigation innerhalb eines Testheft-Teils."
+    },
+    {
+      "name": "Accommodation",
+      "values": ["magnification", "contrast", "reflow", "focus_emphasis", "extended_time", "read_aloud", "simple_language", "extended_descriptions", "large_targets", "reduced_motion", "switch_access", "easy_language"],
+      "description": "Anpassungen, die ein Bedarfsprofil anfragen kann."
+    },
+    {
+      "name": "InputKind",
+      "values": ["text", "number"],
+      "description": "Art einer Texteingabe."
+    },
+    {
+      "name": "Spaces",
+      "values": ["keep", "collapse", "remove"],
+      "description": "Umgang mit Leerraum beim Normalisieren eines Textes."
+    },
+    {
+      "name": "Look",
+      "values": ["box", "strike", "encircle", "highlight", "underline", "slot"],
+      "description": "Darstellung eines Schalters als Kästchen oder als Auszeichnung im Fließtext."
+    },
+    {
+      "name": "PartStart",
+      "values": ["auto", "released"],
+      "description": "Beginn eines Testheft-Teils."
+    },
+    {
+      "name": "TimerLook",
+      "values": ["remaining", "bar", "hidden"],
+      "description": "Darstellung einer Uhr."
+    },
+    {
+      "name": "DotShape",
+      "values": ["disc", "notch"],
+      "description": "Form eines Punkts in einer Ebene."
+    },
+    {
+      "name": "Markup",
+      "values": ["reference", "emphasis", "important", "work_title", "deleted", "superscript", "subscript"],
+      "description": "Bedeutung einer Auszeichnung im Fließtext."
+    }
+  ],
+  "functions": [
+    {
+      "name": "wording",
+      "parameters": [
+        { "name": "text", "type": "Content" },
+        { "name": "simple", "type": "Content?" },
+        { "name": "easy", "type": "Content?" }
+      ],
+      "result": "Content",
+      "description": "Wählt einen Text in der Sprachstufe, die den wirksamen Anpassungen entspricht."
+    },
+    {
+      "name": "accommodations",
+      "parameters": [],
+      "result": "Set<Accommodation>",
+      "description": "Liefert die wirksamen Anpassungen der Fassung."
+    },
+    {
+      "name": "markup",
+      "parameters": [
+        { "name": "kind", "type": "Markup" },
+        { "name": "text", "type": "Content" }
+      ],
+      "result": "Content",
+      "description": "Zeichnet Text im Fließtext nach seiner Bedeutung aus."
+    },
+    {
+      "name": "image",
+      "parameters": [
+        { "name": "src", "type": "Text" },
+        { "name": "alt", "type": "Text" },
+        { "name": "width", "type": "Size?" }
+      ],
+      "result": "Content",
+      "description": "Bindet ein Bild mit Alternativtext als Inhalt ein."
+    },
+    {
+      "name": "math",
+      "parameters": [
+        { "name": "mathml", "type": "Text" },
+        { "name": "tex", "type": "Text" }
+      ],
+      "result": "Content",
+      "description": "Setzt eine Formel als Inhalt, gegeben als MathML für die Darstellung und als LaTeX-Text, aus dem sie stammt."
+    },
+    {
+      "name": "words",
+      "parameters": [
+        { "name": "text", "type": "Text" }
+      ],
+      "result": "List<Text>",
+      "description": "Zerlegt einen Text an Leerraum in Wörter."
+    },
+    {
+      "name": "normalize",
+      "parameters": [
+        { "name": "text", "type": "Text" },
+        { "name": "case", "type": "Bool" },
+        { "name": "spaces", "type": "Spaces" }
+      ],
+      "result": "Text",
+      "description": "Bereitet einen Text für einen exakten Vergleich vor."
+    },
+    {
+      "name": "heard",
+      "parameters": [],
+      "result": "Int",
+      "description": "Liefert die Zahl der abgeschlossenen Wiedergaben aller Hörtexte der Aufgabe."
+    },
+    {
+      "name": "current_page",
+      "parameters": [],
+      "result": "Int",
+      "description": "Liefert die Nummer der gerade sichtbaren Seite der Aufgabe, beginnend bei 1."
+    },
+    {
+      "name": "point",
+      "parameters": [
+        { "name": "x", "type": "Rational?" },
+        { "name": "y", "type": "Rational?" }
+      ],
+      "result": "Point?",
+      "description": "Bildet einen Punkt aus zwei Koordinaten."
+    },
+    {
+      "name": "polar",
+      "parameters": [
+        { "name": "center", "type": "Point?" },
+        { "name": "radius", "type": "Rational?" },
+        { "name": "degrees", "type": "Rational?" }
+      ],
+      "result": "Point?",
+      "description": "Liefert den Punkt, der in gegebenem Abstand und gegebener Richtung von einem Ausgangspunkt liegt."
+    },
+    {
+      "name": "arc",
+      "parameters": [
+        { "name": "center", "type": "Point?" },
+        { "name": "radius", "type": "Rational" },
+        { "name": "from", "type": "Rational" },
+        { "name": "to", "type": "Rational" }
+      ],
+      "result": "Point?",
+      "description": "Bildet einen Kreisbogen als Stück eines Linienzugs."
+    },
+    {
+      "name": "distance",
+      "parameters": [
+        { "name": "a", "type": "Point?" },
+        { "name": "b", "type": "Point?" }
+      ],
+      "result": "Rational?",
+      "description": "Liefert den Abstand zweier Punkte."
+    },
+    {
+      "name": "angle",
+      "parameters": [
+        { "name": "a", "type": "Point?" },
+        { "name": "vertex", "type": "Point?" },
+        { "name": "b", "type": "Point?" }
+      ],
+      "result": "Rational?",
+      "description": "Liefert den Winkel an einem Scheitel in Grad."
+    },
+    {
+      "name": "area",
+      "parameters": [
+        { "name": "points", "type": "List<Point?>" }
+      ],
+      "result": "Rational?",
+      "description": "Liefert den exakten Flächeninhalt eines Vielecks."
+    },
+    {
+      "name": "shape",
+      "parameters": [
+        { "name": "lines", "type": "Set<List<Point?>>" },
+        { "name": "anywhere", "type": "Bool" }
+      ],
+      "result": "Set<List<Point?>>",
+      "description": "Zerlegt eine Figur aus Strecken in kleinste Gitterschritte, unabhängig davon, wie sie gezeichnet wurde."
+    },
+    {
+      "name": "count",
+      "typeParameters": ["T"],
+      "parameters": [
+        { "name": "list", "type": "List<T>" },
+        { "name": "value", "type": "T" }
+      ],
+      "result": "Int",
+      "description": "Zählt, wie oft ein Wert in einer Liste vorkommt."
+    },
+    {
+      "name": "count_in",
+      "typeParameters": ["T"],
+      "parameters": [
+        { "name": "list", "type": "List<T>" },
+        { "name": "values", "type": "Set<T>" }
+      ],
+      "result": "Int",
+      "description": "Zählt die Elemente einer Liste, die in einer Menge liegen."
+    },
+    {
+      "name": "repeat",
+      "typeParameters": ["T"],
+      "parameters": [
+        { "name": "value", "type": "T" },
+        { "name": "n", "type": "Int" }
+      ],
+      "result": "List<T>",
+      "description": "Bildet eine Liste, die einen Wert mehrfach enthält."
+    },
+    {
+      "name": "replace",
+      "typeParameters": ["T"],
+      "parameters": [
+        { "name": "list", "type": "List<T>" },
+        { "name": "at", "type": "Int" },
+        { "name": "value", "type": "T" }
+      ],
+      "result": "List<T>",
+      "description": "Liefert eine Liste mit einem neuen Wert an einer Stelle."
+    },
+    {
+      "name": "size",
+      "typeParameters": ["T"],
+      "parameters": [
+        { "name": "collection", "type": "Collection<T>" }
+      ],
+      "result": "Int",
+      "description": "Liefert die Anzahl der Elemente einer Liste oder Menge."
+    },
+    {
+      "name": "number",
+      "parameters": [
+        { "name": "text", "type": "Text" }
+      ],
+      "result": "Rational?",
+      "description": "Liest einen Text als Zahl."
+    },
+    {
+      "name": "proportion",
+      "parameters": [
+        { "name": "text", "type": "Text" }
+      ],
+      "result": "Rational?",
+      "description": "Liest einen Text als Anteil."
+    },
+    {
+      "name": "rounds_to",
+      "parameters": [
+        { "name": "text", "type": "Text" },
+        { "name": "value", "type": "Rational" },
+        { "name": "digits", "type": "Int" }
+      ],
+      "result": "Bool",
+      "description": "Prüft, ob ein Text einen Wert korrekt gerundet angibt."
+    },
+    {
+      "name": "quantity",
+      "parameters": [
+        { "name": "text", "type": "Text" },
+        { "name": "unit", "type": "Text" }
+      ],
+      "result": "Rational?",
+      "description": "Liest eine Zahl mit Einheit und rechnet sie in die Zieleinheit um."
+    },
+    {
+      "name": "is_reduced",
+      "parameters": [
+        { "name": "text", "type": "Text" }
+      ],
+      "result": "Bool",
+      "description": "Prüft, ob ein Text einen Bruch in gekürzter Form angibt."
+    },
+    {
+      "name": "accept",
+      "parameters": [
+        { "name": "text", "type": "Text" },
+        { "name": "pattern", "type": "Text" },
+        { "name": "typos", "type": "Int" },
+        { "name": "case", "type": "Bool" }
+      ],
+      "result": "Bool",
+      "description": "Prüft, ob ein Text zu einem Antwortmuster passt."
+    },
+    {
+      "name": "accepted",
+      "parameters": [
+        { "name": "texts", "type": "List<Text>" },
+        { "name": "patterns", "type": "List<Text>" },
+        { "name": "typos", "type": "Int" },
+        { "name": "case", "type": "Bool" }
+      ],
+      "result": "Int",
+      "description": "Zählt, wie viele Antwortmuster von verschiedenen Antworten getroffen werden."
+    },
+    {
+      "name": "changed",
+      "form": "meta",
+      "parameters": [
+        { "name": "response", "type": "Text" }
+      ],
+      "result": "Bool",
+      "description": "Prüft, ob die Antwort mit dem genannten Namen gegenüber ihrem Anfangszustand verändert wurde."
+    },
+    {
+      "name": "displayed",
+      "form": "meta",
+      "parameters": [
+        { "name": "response", "type": "Text" }
+      ],
+      "result": "Bool",
+      "description": "Prüft, ob die Antwort mit dem genannten Namen angezeigt wurde."
+    },
+    {
+      "name": "sum_score",
+      "form": "meta",
+      "parameters": [
+        { "name": "responses", "type": "Text", "variadic": true }
+      ],
+      "result": "Rational",
+      "description": "Liefert die Summe der Scores der Antworten mit den genannten Namen."
+    }
+  ],
+  "elements": [
+    {
+      "name": "page",
+      "parameters": [],
+      "children": true,
+      "description": "Bildet eine Seite einer Aufgabe."
+    },
+    {
+      "name": "section",
+      "parameters": [
+        { "name": "heading", "type": "Content?" }
+      ],
+      "children": true,
+      "description": "Bildet einen Abschnitt mit optionaler Überschrift."
+    },
+    {
+      "name": "row",
+      "parameters": [
+        { "name": "gap", "type": "Size?" },
+        { "name": "keep", "type": "Bool" },
+        { "name": "head", "type": "Bool" }
+      ],
+      "children": true,
+      "description": "Stellt Elemente nebeneinander oder bildet in einer Tabelle eine Zeile."
+    },
+    {
+      "name": "group",
+      "parameters": [
+        { "name": "role", "type": "GroupRole" },
+        { "name": "label", "type": "Content?" },
+        { "name": "dropdown", "type": "Bool" },
+        { "name": "cards", "type": "Side?" }
+      ],
+      "children": true,
+      "description": "Fasst Bedienelemente unter einem zugänglichen Namen zusammen."
+    },
+    {
+      "name": "p",
+      "parameters": [
+        { "name": "tone", "type": "Tone" }
+      ],
+      "children": true,
+      "description": "Bildet einen Absatz."
+    },
+    {
+      "name": "box",
+      "parameters": [
+        { "name": "tone", "type": "Tone" },
+        { "name": "side", "type": "Side" },
+        { "name": "heading", "type": "Content?" },
+        { "name": "label", "type": "Content?" }
+      ],
+      "children": true,
+      "description": "Bildet einen abgegrenzten Block, dessen Art und Seite die Aufgabe angibt."
+    },
+    {
+      "name": "list",
+      "parameters": [
+        { "name": "ordered", "type": "Bool" },
+        { "name": "label", "type": "Content?" }
+      ],
+      "children": true,
+      "description": "Bildet eine Aufzählung, in der jedes Kind ein Eintrag ist."
+    },
+    {
+      "name": "stimulus",
+      "parameters": [
+        { "name": "label", "type": "Content?" }
+      ],
+      "children": true,
+      "description": "Enthält das Material, auf das sich die Fragen einer Aufgabe beziehen."
+    },
+    {
+      "name": "table",
+      "parameters": [
+        { "name": "caption", "type": "Content?" }
+      ],
+      "children": true,
+      "description": "Bildet eine Tabelle aus Zeilen mit Zellen."
+    },
+    {
+      "name": "cell",
+      "parameters": [
+        { "name": "span", "type": "Int" }
+      ],
+      "children": true,
+      "description": "Bildet eine Zelle einer Tabellenzeile."
+    },
+    {
+      "name": "lines",
+      "parameters": [
+        { "name": "every", "type": "Int" },
+        { "name": "start", "type": "Int" }
+      ],
+      "children": true,
+      "description": "Zeigt Text in festen Zeilen mit Zeilennummern."
+    },
+    {
+      "name": "timer",
+      "parameters": [
+        { "name": "duration", "type": "Duration" },
+        { "name": "running", "type": "Bool" },
+        { "name": "label", "type": "Content?" },
+        { "name": "look", "type": "TimerLook" },
+        { "name": "extended", "type": "Bool" }
+      ],
+      "children": false,
+      "events": ["elapsed"],
+      "description": "Zählt eine Zeitspanne herunter und meldet ihren Ablauf."
+    },
+    {
+      "name": "media",
+      "parameters": [
+        { "name": "src", "type": "Text" },
+        { "name": "playing", "type": "Bool" },
+        { "name": "from", "type": "Duration?" },
+        { "name": "to", "type": "Duration?" },
+        { "name": "label", "type": "Content?" },
+        { "name": "captions", "type": "Text?" },
+        { "name": "described", "type": "Text?" },
+        { "name": "width", "type": "Size?" }
+      ],
+      "children": false,
+      "events": ["ready", "ended"],
+      "description": "Spielt eine Audio- oder Videodatei ab."
+    },
+    {
+      "name": "flow",
+      "parameters": [
+        { "name": "navigation", "type": "Bool" },
+        { "name": "locked", "type": "Bool" },
+        { "name": "advance", "type": "Bool" }
+      ],
+      "children": false,
+      "description": "Steuert im Ablauf die Navigation und die Sperre der Antworten."
+    },
+    {
+      "name": "toggle",
+      "parameters": [
+        { "name": "role", "type": "ToggleRole" },
+        { "name": "checked", "type": "Bool" },
+        { "name": "label", "type": "Content?" },
+        { "name": "disabled", "type": "Bool" },
+        { "name": "look", "type": "Look" },
+        { "name": "at", "type": "Point?" }
+      ],
+      "children": true,
+      "events": ["check", "uncheck"],
+      "description": "Bildet einen Schalter mit zwei Zuständen."
+    },
+    {
+      "name": "input",
+      "parameters": [
+        { "name": "label", "type": "Content?" },
+        { "name": "kind", "type": "InputKind" },
+        { "name": "width", "type": "Size?" },
+        { "name": "max", "type": "Int?" },
+        { "name": "multiline", "type": "Bool" },
+        { "name": "at", "type": "Point?" },
+        { "name": "keys", "type": "List<Text>" }
+      ],
+      "binding": "Text",
+      "children": false,
+      "events": ["change"],
+      "description": "Bildet ein Feld für die Eingabe von Text in den gebundenen Zustand."
+    },
+    {
+      "name": "value",
+      "typeParameters": ["T"],
+      "parameters": [
+        { "name": "min", "type": "T" },
+        { "name": "max", "type": "T" },
+        { "name": "step", "type": "Rational" },
+        { "name": "label", "type": "Content?" },
+        { "name": "role", "type": "ValueRole" },
+        { "name": "display", "type": "Content?" }
+      ],
+      "binding": "T?",
+      "children": false,
+      "events": ["change"],
+      "description": "Bildet einen verschiebbaren Wert auf einer Skala oder einen verschiebbaren Punkt in einer Ebene, der den gebundenen Zustand setzt."
+    },
+    {
+      "name": "plane",
+      "parameters": [
+        { "name": "x", "type": "Interval<Rational>" },
+        { "name": "y", "type": "Interval<Rational>?" },
+        { "name": "grid", "type": "Rational?" },
+        { "name": "width", "type": "Size?" },
+        { "name": "x_axis", "type": "Content?" },
+        { "name": "y_axis", "type": "Content?" },
+        { "name": "background", "type": "Text?" }
+      ],
+      "children": true,
+      "description": "Bildet eine Ebene mit mathematischen Koordinaten."
+    },
+    {
+      "name": "dot",
+      "parameters": [
+        { "name": "at", "type": "Point?" },
+        { "name": "label", "type": "Content?" },
+        { "name": "shape", "type": "DotShape" }
+      ],
+      "children": false,
+      "description": "Zeichnet einen Punkt in einer Ebene."
+    },
+    {
+      "name": "caption",
+      "parameters": [
+        { "name": "at", "type": "Point?" },
+        { "name": "text", "type": "Content" }
+      ],
+      "children": false,
+      "description": "Setzt Text an eine Stelle einer Ebene."
+    },
+    {
+      "name": "polygon",
+      "parameters": [
+        { "name": "points", "type": "List<Point?>" },
+        { "name": "tone", "type": "Tone?" },
+        { "name": "closed", "type": "Bool" }
+      ],
+      "children": false,
+      "description": "Zeichnet ein Vieleck oder einen Linienzug aus Punkten und Kreisbögen."
+    }
+  ]
+}

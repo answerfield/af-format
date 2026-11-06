@@ -1,0 +1,586 @@
+{
+  "cases": [
+    {
+      "name": "auswahl",
+      "description": "Choice, Select, Match, Matrix, Check, Button, Tabs: Anfangswerte, Antworten, Sperren, zurück auf den Anfangswert (semantik.md, Abschnitte 5 „Antworten“, 7 und 9).",
+      "item": "auswahl",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "single": {
+                  "value": [],
+                  "changed": false
+                },
+                "multi": {
+                  "value": []
+                },
+                "sel": {
+                  "value": null
+                },
+                "pairs": {
+                  "value": [
+                    null,
+                    null
+                  ]
+                },
+                "grid": {
+                  "value": [
+                    null,
+                    null
+                  ]
+                },
+                "agree": {
+                  "value": false
+                },
+                "go": {
+                  "value": false
+                },
+                "view": {
+                  "value": 1,
+                  "changed": false
+                }
+              }
+            },
+            "elements": [
+              {
+                "element": "toggle",
+                "index": 0,
+                "args": {
+                  "role": "radio"
+                }
+              },
+              {
+                "element": "toggle",
+                "index": 3,
+                "args": {
+                  "role": "checkbox"
+                }
+              },
+              {
+                "element": "group",
+                "index": 2,
+                "args": {
+                  "role": "radiogroup",
+                  "dropdown": true,
+                  "label": "Liste"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 0
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 1
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 3
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 4
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 5
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 6
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 8
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 10
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 17
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 20
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 21
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 23
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "single": {
+                  "value": [
+                    2
+                  ]
+                },
+                "multi": {
+                  "value": [
+                    1,
+                    2,
+                    3,
+                    4
+                  ]
+                },
+                "sel": {
+                  "value": 2,
+                  "changed": true
+                },
+                "pairs": {
+                  "value": [
+                    1,
+                    null
+                  ]
+                },
+                "grid": {
+                  "value": [
+                    2,
+                    null
+                  ]
+                },
+                "agree": {
+                  "value": true
+                },
+                "go": {
+                  "value": true
+                },
+                "view": {
+                  "value": 2,
+                  "changed": true
+                }
+              }
+            },
+            "elements": [
+              {
+                "element": "toggle",
+                "index": 13,
+                "args": {
+                  "disabled": true,
+                  "checked": false
+                }
+              },
+              {
+                "element": "toggle",
+                "index": 10,
+                "args": {
+                  "disabled": false,
+                  "checked": true
+                }
+              },
+              {
+                "element": "toggle",
+                "index": 21,
+                "args": {
+                  "disabled": true,
+                  "checked": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 8
+          },
+          "event": "uncheck"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 20
+          },
+          "event": "uncheck"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 21
+          },
+          "event": "uncheck"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "sel": {
+                  "value": null,
+                  "changed": false
+                },
+                "agree": {
+                  "value": false,
+                  "changed": false
+                },
+                "go": {
+                  "value": true
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "texteingabe",
+      "description": "Vorgegebener Text ist der Anfangswert: unverändert bleibt die Antwort ein Missing (semantik.md, Abschnitte 5 „Antworten“ und 9).",
+      "item": "text_eingabe",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "fix": {
+                  "value": "Libe",
+                  "changed": false
+                },
+                "long": {
+                  "value": ""
+                }
+              }
+            },
+            "coding": {
+              "variables": {
+                "fix": {
+                  "missing": "omitted"
+                }
+              }
+            }
+          }
+        },
+        {
+          "emit": {
+            "element": "input",
+            "index": 0
+          },
+          "event": "bind",
+          "value": "Liebe"
+        },
+        {
+          "emit": {
+            "element": "input",
+            "index": 1
+          },
+          "event": "bind",
+          "value": "weil es so ist"
+        },
+        {
+          "expect": {
+            "coding": {
+              "variables": {
+                "fix": {
+                  "code": 1
+                },
+                "long": {
+                  "code": 1
+                }
+              }
+            }
+          }
+        },
+        {
+          "emit": {
+            "element": "input",
+            "index": 0
+          },
+          "event": "bind",
+          "value": "Libe"
+        },
+        {
+          "expect": {
+            "coding": {
+              "variables": {
+                "fix": {
+                  "missing": "omitted"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "im-text",
+      "description": "MarkWords: Nummer des Worts (semantik.md, Abschnitte 8 „Auswahl“ und 9).",
+      "item": "im_text",
+      "steps": [
+        {
+          "expect": {
+            "elements": [
+              {
+                "element": "toggle",
+                "index": 2,
+                "args": {
+                  "look": "encircle"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 2
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "words": {
+                  "value": [
+                    3
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "zeichnen",
+      "description": "Geoboard: zwei Gitterpunkte ergeben eine Strecke (Richtung egal), dieselbe Strecke noch einmal nimmt sie weg, derselbe Punkt zweimal bricht ab (semantik.md, Abschnitt 9).",
+      "item": "zeichnen",
+      "steps": [
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 0
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 2
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "drawn": {
+                  "value": [
+                    [
+                      {
+                        "x": 0,
+                        "y": 0
+                      },
+                      {
+                        "x": 2,
+                        "y": 0
+                      }
+                    ]
+                  ],
+                  "changed": true
+                }
+              }
+            }
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 4
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 4
+          },
+          "event": "uncheck"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "drawn": {
+                  "value": [
+                    [
+                      {
+                        "x": 0,
+                        "y": 0
+                      },
+                      {
+                        "x": 2,
+                        "y": 0
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 2
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 0
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "drawn": {
+                  "value": [],
+                  "changed": false
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "zustandsregeln",
+      "description": "Anfangswerte von Zuständen werden einmal berechnet; Zustände in Schleifen gehören zur Position (semantik.md, Abschnitt 6).",
+      "item": "zustand_regeln",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "fields": {
+                  "value": [
+                    ""
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 0
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "more": {
+                  "value": true
+                },
+                "fields": {
+                  "value": [
+                    ""
+                  ]
+                }
+              }
+            }
+          }
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 2
+          },
+          "event": "check"
+        },
+        {
+          "emit": {
+            "element": "toggle",
+            "index": 1
+          },
+          "event": "check"
+        },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "ord": {
+                  "value": [
+                    "b",
+                    "a"
+                  ]
+                }
+              }
+            },
+            "elements": [
+              {
+                "element": "toggle",
+                "index": 2,
+                "args": {
+                  "label": "b",
+                  "checked": true
+                }
+              },
+              {
+                "element": "toggle",
+                "index": 3,
+                "args": {
+                  "label": "a",
+                  "checked": false
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

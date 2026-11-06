@@ -1,0 +1,112 @@
+{
+  "cases": [
+    {
+      "name": "studienregel",
+      "description": "Die Aufgabe schließt simple_language aus; wirksam bleibt nur magnification, accommodations() sieht nur sie (semantik.md, Abschnitt 11 „Wirksame Anpassungen“).",
+      "item": "ohne_einfach",
+      "accommodations": ["simple_language", "magnification"],
+      "steps": [
+        {
+          "expect": {
+            "accommodations": ["magnification"],
+            "shows": ["Lies den Text."],
+            "hides": ["Lies."],
+            "responses": { "accommodations": ["magnification"], "variables": { "n": { "value": 1 } } }
+          }
+        }
+      ]
+    },
+    {
+      "name": "ohne-anpassung",
+      "description": "Ohne Anpassungen: Originaltexte, kein Variantenwert, Frage im Ausgangstext (semantik.md, Abschnitte 8 und 11 „Varianten und Sprachstufen“).",
+      "item": "stufen",
+      "steps": [
+        {
+          "expect": {
+            "accommodations": [],
+            "shows": ["Auf der Wiese lässt ein Mädchen einen Drachen steigen und hält die Schnur mit beiden Händen fest.", "Wähle eine Antwort.", "Schau auf das Bild."],
+            "hides": ["Auf der Wiese lässt ein Mädchen einen Drachen steigen.", "Wähle."],
+            "elements": [
+              { "element": "group", "index": 0, "args": { "label": "Wo lässt das Mädchen den Drachen steigen?" } },
+              { "element": "p", "index": 2, "variants": { "extended_descriptions": null } }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "einfache-sprache",
+      "description": "simple_language ersetzt Inhalte durch variant(simple_language); wording ohne simple bleibt beim Text (semantik.md, Abschnitt 11 „Varianten und Sprachstufen“).",
+      "item": "stufen",
+      "accommodations": ["simple_language"],
+      "steps": [
+        {
+          "expect": {
+            "shows": ["Auf der Wiese lässt ein Mädchen einen Drachen steigen.", "Wähle."],
+            "hides": ["Auf der Wiese lässt ein Mädchen einen Drachen steigen und hält die Schnur mit beiden Händen fest.", "Wähle eine Antwort."],
+            "elements": [{ "element": "group", "index": 0, "args": { "label": "Wo lässt das Mädchen den Drachen steigen?" } }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "leichte-sprache",
+      "description": "easy_language: Block-Ersatz mit anderer Absatzteilung, Rückfall auf simple, wording(easy:) (semantik.md, Abschnitt 11 „Varianten und Sprachstufen“).",
+      "item": "stufen",
+      "accommodations": ["easy_language"],
+      "steps": [
+        {
+          "expect": {
+            "shows": ["Ein Mädchen ist auf der Wiese.", "Sie lässt einen Drachen steigen.", "Wähle."],
+            "hides": ["Auf der Wiese lässt ein Mädchen einen Drachen steigen.", "Wähle eine Antwort."],
+            "elements": [{ "element": "group", "index": 0, "args": { "label": "Wo ist das Mädchen?" } }]
+          }
+        }
+      ]
+    },
+    {
+      "name": "beschreibung",
+      "description": "extended_descriptions gibt variant(extended_descriptions) an das Element weiter; der Inhalt bleibt (semantik.md, Abschnitte 8 und 11 „Varianten und Sprachstufen“).",
+      "item": "stufen",
+      "accommodations": ["extended_descriptions"],
+      "steps": [
+        {
+          "expect": {
+            "shows": ["Schau auf das Bild."],
+            "elements": [
+              { "element": "p", "index": 2, "variants": { "extended_descriptions": "Ein Mädchen hält einen roten Drachen an einer langen Schnur." } }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "fassung-standard",
+      "description": "Ohne Wahl gelten die Standardwerte; die Kodierung rechnet mit ihnen (semantik.md, Abschnitte 10, 11 „Fassungen“ und 14).",
+      "item": "eier",
+      "steps": [
+        { "expect": { "params": { "per_box": 6, "boxes": 4 }, "shows": ["6", "4"], "responses": { "params": { "per_box": 6, "boxes": 4 } } } },
+        { "emit": { "element": "input", "index": 0 }, "event": "bind", "value": "24" },
+        { "expect": { "coding": { "variables": { "total": { "code": 1 } } } } }
+      ]
+    },
+    {
+      "name": "fassung-anpassung",
+      "description": "Passen die Standardwerte nicht zu den Anpassungen, gilt die erste passende Fassung in Wertebereichsreihenfolge (semantik.md, Abschnitt 11 „Wirksame Anpassungen“, „Fassungen“).",
+      "item": "eier",
+      "accommodations": ["easy_language"],
+      "steps": [{ "expect": { "accommodations": ["easy_language"], "params": { "per_box": 4, "boxes": 2 } } }]
+    },
+    {
+      "name": "fassung-gewaehlt",
+      "description": "Vom Host gewählte Fassung; Kodierung mit denselben Zahlen, auch nach Wiederaufnahme (semantik.md, Abschnitt 11 „Fassungen“).",
+      "item": "eier",
+      "params": { "per_box": 5, "boxes": 3 },
+      "steps": [
+        { "emit": { "element": "input", "index": 0 }, "event": "bind", "value": "15" },
+        { "restore": true },
+        { "expect": { "params": { "per_box": 5, "boxes": 3 }, "coding": { "variables": { "total": { "code": 1 } } } } }
+      ]
+    }
+  ]
+}

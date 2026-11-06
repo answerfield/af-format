@@ -1,0 +1,149 @@
+{
+  "cases": [
+    {
+      "name": "ereignisse",
+      "description": "Handler, gleichzeitige Zuweisung, gesperrte Atome, bind mit on change, Listenbindung, gebundene Zustandsparameter, Instanzpfade, value mit Zahl und Punkt, Wiederaufnahme (semantik.md, Abschnitte 6, 7, 8 „Wert und Ebene“ und 14 „Protokoll“).",
+      "item": "ereignisse",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "count": { "value": 0, "changed": false, "displayed": true },
+                "swap": { "value": [1, 2], "changed": false },
+                "locked": { "value": false },
+                "typed": { "value": ["", "0"] },
+                "faces": { "value": ["", "", ""] },
+                "pairs": { "value": [null, null] },
+                "scale": { "value": null },
+                "place": { "value": null }
+              }
+            },
+            "state": {
+              "/count.n": 0,
+              "/swap.a": 1,
+              "/swap.b": 2,
+              "/locked.active": false,
+              "/typed.t": "",
+              "/typed.edits": 0,
+              "/faces.faces": ["", "", ""],
+              "/pairs.chosen": [null, null],
+              "/Choice#0.selected": [],
+              "/scale.pos": null,
+              "/place.c": null
+            }
+          }
+        },
+        { "emit": { "element": "toggle", "index": 0 }, "event": "check" },
+        { "emit": { "element": "toggle", "index": 0 }, "event": "check" },
+        { "emit": { "element": "toggle", "index": 1 }, "event": "check" },
+        { "emit": { "element": "toggle", "index": 2 }, "event": "check" },
+        { "emit": { "element": "input", "index": 0 }, "event": "bind", "value": "ab" },
+        { "emit": { "element": "input", "index": 0 }, "event": "bind", "value": "a" },
+        { "emit": { "element": "input", "index": 2 }, "event": "bind", "value": "x" },
+        { "emit": { "element": "toggle", "index": 6 }, "event": "check" },
+        { "emit": { "element": "toggle", "index": 4 }, "event": "check" },
+        { "emit": { "element": "toggle", "index": 10 }, "event": "check" },
+        { "emit": { "element": "toggle", "index": 12 }, "event": "check" },
+        { "emit": { "element": "value", "index": 0 }, "event": "bind", "value": "7/20", "type": "Rational" },
+        { "emit": { "element": "value", "index": 1 }, "event": "bind", "value": { "x": "7/2", "y": 4 }, "type": "Point" },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "count": { "value": 2, "changed": true },
+                "swap": { "value": [2, 1], "changed": true },
+                "locked": { "value": false, "changed": false },
+                "typed": { "value": ["a", "2"], "changed": true },
+                "faces": { "value": ["", "x", ""], "changed": true },
+                "pairs": { "value": [2, 1], "changed": true },
+                "scale": { "value": "7/20", "changed": true },
+                "place": { "value": { "x": "7/2", "y": 4 }, "changed": true }
+              }
+            },
+            "state": {
+              "/count.n": 2,
+              "/Rows#0[0]/Check#0.checked": false,
+              "/Rows#0[1]/Check#0.checked": true,
+              "/Choice#0.selected": [2]
+            },
+            "elements": [
+              { "element": "toggle", "index": 4, "args": { "checked": true, "role": "radio" } },
+              { "element": "toggle", "index": 3, "args": { "checked": false } },
+              { "element": "toggle", "index": 2, "args": { "disabled": true, "checked": false } },
+              { "element": "input", "index": 0, "bind": "a" },
+              { "element": "input", "index": 2, "bind": "x", "args": { "label": "Fläche 2" } }
+            ],
+            "log": [
+              { "event": "toggle.check", "path": "/count" },
+              { "event": "toggle.check", "path": "/count" },
+              { "event": "toggle.check", "path": "/swap" },
+              { "event": "input.bind", "path": "/typed", "value": "ab" },
+              { "event": "input.change", "path": "/typed" },
+              { "event": "value.bind", "path": "/place", "value": { "x": "7/2", "y": 4 } }
+            ]
+          }
+        },
+        { "restore": true },
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "count": { "value": 2, "changed": true },
+                "faces": { "value": ["", "x", ""], "changed": true },
+                "place": { "value": { "x": "7/2", "y": 4 }, "changed": true }
+              }
+            },
+            "state": { "/Choice#0.selected": [2] }
+          }
+        },
+        { "emit": { "element": "input", "index": 2 }, "event": "bind", "value": "" },
+        {
+          "expect": {
+            "responses": { "variables": { "faces": { "value": ["", "", ""], "changed": false } } }
+          }
+        }
+      ]
+    },
+    {
+      "name": "sichtbarkeit",
+      "description": "displayed folgt Seite und show; einmal angezeigt bleibt angezeigt; current_page() auch in Komponenten; Seite bei Wiederaufnahme (semantik.md, Abschnitte 4 „An die Aufgabe gebunden“ und 5 „Seiten und Sichtbarkeit“, „Antworten“).",
+      "item": "sichtbarkeit",
+      "steps": [
+        {
+          "expect": {
+            "pageCount": 2,
+            "page": 0,
+            "responses": {
+              "variables": {
+                "agree": { "value": [], "displayed": true },
+                "why": { "displayed": false },
+                "on_page": { "value": 1 },
+                "later": { "displayed": false }
+              }
+            }
+          }
+        },
+        { "emit": { "element": "toggle", "index": 1 }, "event": "check" },
+        { "expect": { "responses": { "variables": { "agree": { "value": [2] }, "why": { "displayed": true } } } } },
+        { "emit": { "element": "toggle", "index": 0 }, "event": "check" },
+        { "expect": { "responses": { "variables": { "agree": { "value": [1] }, "why": { "displayed": true } } } } },
+        { "page": 1 },
+        { "expect": { "responses": { "variables": { "later": { "displayed": true }, "on_page": { "value": 2 } } } } },
+        { "restore": true },
+        {
+          "expect": {
+            "page": 1,
+            "responses": {
+              "variables": {
+                "agree": { "value": [1], "changed": true },
+                "why": { "displayed": true, "changed": false },
+                "later": { "displayed": true }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

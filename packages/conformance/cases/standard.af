@@ -1,0 +1,52 @@
+// Standardkomponenten aus std und ihre Antworten (semantik.md, Abschnitt 9).
+
+item auswahl "Auswahl" {
+  single = Choice("Einfach", ["a", "b", "c"])
+  multi = Choice("Mehrfach", ["a", "b", "c", "d"], max: 3)
+  sel = Select("Liste", ["x", "y", "z"])
+  pairs = Match(rows: ["Eins", "Zwei"], options: ["Rot", "Grün", "Blau"], once: true)
+  grid = Matrix(rows: ["Satz 1", "Satz 2"], columns: ["richtig", "falsch"])
+  agree = Check("trifft zu")
+  go = Button("weiter", once: true)
+  view = Tabs("Ansicht", ["Text A", "Text B"])
+}
+
+item text_eingabe "Texteingabe" {
+  fix = Gap("Verbessere", initial: "Libe")
+  long = FreeText("Begründe", max: 20)
+}
+
+item im_text "Im Text markieren" {
+  words = MarkWords("Der Hund bellt laut", label: "Markiere das Verb")
+}
+
+item zeichnen "Zeichnen" {
+  plane(x: 0 .. 2, y: 0 .. 1, grid: 1) {
+    drawn = Geoboard(cols: 2, rows: 1, label: "Raster")
+  }
+}
+
+/** Zustand mit Anfangswert aus einem Parameter: der Anfangswert wird einmal berechnet. */
+component Fields(n: Int, state xs: List<Text> = repeat("", n)): response List<Text> {
+  for x, i in xs { input(bind: xs[i], label: "Feld {i}") }
+  response xs
+}
+
+/** Zustände in Schleifen gehören zur Position, nicht zum Wert. */
+component Order(state flipped: Bool = false): response List<Text> {
+  let order = if flipped then ["b", "a"] else ["a", "b"]
+  toggle(role: button, label: "umdrehen", on check: flipped := not flipped)
+  for entry in order { Check(entry) }
+  response order
+}
+
+item zustand_regeln "Zustandsregeln" {
+  more = Check("mehr Felder")
+  fields = Fields(n: if more then 3 else 1)
+  ord = Order()
+}
+
+coding text_eingabe {
+  fix: correct(fix == "Liebe")
+  long: correct(size(words(long)) >= 2)
+}

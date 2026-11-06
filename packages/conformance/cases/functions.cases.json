@@ -1,0 +1,149 @@
+{
+  "cases": [
+    {
+      "name": "zahlen-lesen",
+      "description": "number, proportion, rounds_to, quantity, is_reduced (semantik.md, Abschnitt 4 „Zahlen in Antworten lesen“).",
+      "item": "zahlen_lesen",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "spaced": { "value": 34000 },
+                "dotted": { "value": 34000 },
+                "unit": { "value": "17/4" },
+                "dollar": { "value": 15 },
+                "percent": { "value": "311/5" },
+                "frac": { "value": "3/4" },
+                "leading_zero": { "value": "1/4" },
+                "minus": { "value": -5 },
+                "grouped_decimal": { "value": "2469/2" },
+                "de": { "value": 21 },
+                "de_long": { "value": 1465 },
+                "en": { "value": 21 },
+                "fr": { "value": 21 },
+                "word_unit": { "value": 2 },
+                "two_numbers": { "value": null },
+                "empty": { "value": null },
+                "p_percent": { "value": "1/4" },
+                "p_ratio": { "value": "1/4" },
+                "p_decimal": { "value": "1/4" },
+                "p_odds": { "value": null },
+                "r_two": { "value": true },
+                "r_percent": { "value": true },
+                "r_whole_percent": { "value": true },
+                "r_zero": { "value": true },
+                "r_zero_digits": { "value": false },
+                "r_wrong": { "value": false },
+                "q_cm": { "value": 300 },
+                "q_same": { "value": 300 },
+                "q_dollar": { "value": 15 },
+                "q_word": { "value": 15 },
+                "q_fr": { "value": "17/4" },
+                "q_twice": { "value": 12 },
+                "q_numberword": { "value": 200 },
+                "q_time": { "value": 90 },
+                "q_wrong_dim": { "value": null },
+                "q_no_unit": { "value": null },
+                "reduced": { "value": true },
+                "not_reduced": { "value": false },
+                "reduced_int": { "value": true },
+                "reduced_dec": { "value": false }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "muster",
+      "description": "accept und accepted: optionale und Pflichtteile, Alternativen, Tippfehler, Groß-/Kleinschreibung, Satzzeichen (semantik.md, Abschnitt 4 „Antwortmuster“).",
+      "item": "muster",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "optional": { "value": true },
+                "typo": { "value": true },
+                "typo_off": { "value": false },
+                "case_on": { "value": false },
+                "word_alt": { "value": true },
+                "word_alt2": { "value": true },
+                "whole_alt": { "value": true },
+                "digits_exact": { "value": false },
+                "compound": { "value": true },
+                "compound_dash": { "value": true },
+                "compound_short": { "value": true },
+                "joined": { "value": true },
+                "joined_off": { "value": false },
+                "required": { "value": true },
+                "required_missing": { "value": false },
+                "punctuation": { "value": true },
+                "apostrophe": { "value": true },
+                "decimal_kept": { "value": false },
+                "date": { "value": true },
+                "empty_answer": { "value": false },
+                "two_of_two": { "value": 2 },
+                "same_twice": { "value": 1 },
+                "with_typo": { "value": 2 }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "textfunktionen",
+      "description": "normalize und words (semantik.md, Abschnitt 4 „Listen, Mengen, Text“).",
+      "item": "text_funktionen",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "removed": { "value": "abc" },
+                "collapsed": { "value": "a b" },
+                "kept": { "value": " A " },
+                "split": { "value": ["Das", "ist,", "gut."] }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "geometrie",
+      "description": "Punkte, Abstände und Winkel (auf 6 Stellen gerundet), exakte Flächen, Figuren als Gitterschritte in kanonischer Reihenfolge (semantik.md, Abschnitte 2 „Ordnung von Mengen“ und 4 „Geometrie“).",
+      "item": "geometrie",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "p1": { "value": { "x": 1, "y": 2 } },
+                "p_none": { "value": null },
+                "polar_up": { "value": { "x": 0, "y": 2 } },
+                "polar_diag": { "value": { "x": "1707107/1000000", "y": "1707107/1000000" } },
+                "x_of": { "value": 3 },
+                "dist": { "value": 5 },
+                "dist_root": { "value": "707107/500000" },
+                "dist_none": { "value": null },
+                "right": { "value": 90 },
+                "angle_zero": { "value": null },
+                "tri": { "value": 6 },
+                "tri_none": { "value": null },
+                "two": { "value": null },
+                "steps": { "value": [[{ "x": 0, "y": 0 }, { "x": 1, "y": 0 }], [{ "x": 1, "y": 0 }, { "x": 2, "y": 0 }]] },
+                "pieces": { "value": true },
+                "moved": { "value": true },
+                "fixed": { "value": false },
+                "sorted": { "value": [[{ "x": 10, "y": 0 }, { "x": 11, "y": 0 }], [{ "x": 2, "y": 0 }, { "x": 3, "y": 0 }]] }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

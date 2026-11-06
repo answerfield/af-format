@@ -1,0 +1,95 @@
+// Zustand, Ereignisse, Bindungen, Instanzpfade, Sichtbarkeit (semantik.md, Abschnitte 5 bis 7).
+
+/** Knopf zählt hoch: Handler weist einem Zustand zu. */
+component Counter(label: Content, state n: Int = 0): response Int {
+  toggle(role: button, label: label, on check: n := n + 1)
+  response n
+}
+
+/** Zwei Handler für dasselbe Ereignis: erst alle Werte berechnen, dann zuweisen. */
+component Swap(state a: Int = 1, state b: Int = 2): response List<Int> {
+  toggle(role: button, label: "tauschen", on check: a := b, on check: b := a)
+  response [a, b]
+}
+
+/** Gesperrter Schalter nimmt keine Ereignisse an. */
+component Locked(state active: Bool = false): response Bool {
+  toggle(label: "gesperrt", disabled: true, checked: active, on check: active := true)
+  response active
+}
+
+/** Gebundene Änderung löst danach `on change` aus. */
+component Typed(state t: Text = "", state edits: Int = 0): response List<Text> {
+  input(bind: t, label: "Text", on change: edits := edits + 1)
+  response [t, "{edits}"]
+}
+
+/** Bindung an Listenelemente in einer Schleife. */
+component Faces(n: Int, state faces: List<Text> = repeat("", n)): response List<Text> {
+  for f, i in faces {
+    input(bind: faces[i], label: "Fläche {i}")
+  }
+  response faces
+}
+
+/** Zustandsparameter an Listenelemente des Aufrufers gebunden. */
+component Pairs(rows: List<Content>, options: List<Content>,
+                state chosen: List<Int?> = repeat(none, size(rows))): response List<Int?>
+{
+  for text, r in rows {
+    p { text ": " Select(label: text, options: options, chosen: chosen[r]) }
+  }
+  response chosen
+}
+
+/** Reine Darstellung mit eigenen Antworten je Zeile (Pfad mit Schleifenindex). */
+component Rows() {
+  for i in 1 .. 2 {
+    Check("Zeile {i}")
+  }
+}
+
+/** Wert auf einer Skala. */
+component Scale(state pos: Rational? = none): response Rational? {
+  plane(x: 0 .. 1, x_axis: "") {
+    value(bind: pos, min: 0, max: 1, step: 1/20, label: "Skala")
+  }
+  response pos
+}
+
+/** Punkt in der Ebene. */
+component Place(state c: Point? = none): response Point? {
+  plane(x: 0 .. 8, y: 0 .. 6, grid: 1) {
+    value(bind: c, min: (0 | 0), max: (8 | 6), step: 1/2, label: "Punkt Q", display: "Q")
+  }
+  response c
+}
+
+/** Aufgabenfunktionen gelten auch in Komponenten. */
+component PageOf(): response Int { response current_page() }
+
+item ereignisse "Ereignisse" {
+  count = Counter("plus eins")
+  swap = Swap()
+  locked = Locked()
+  typed = Typed()
+  faces = Faces(n: 3)
+  pairs = Pairs(rows: ["Eins", "Zwei"], options: ["Rot", "Grün", "Blau"])
+  Rows()
+  Choice("ohne Bindung", ["x", "y"])
+  scale = Scale()
+  place = Place()
+}
+
+item sichtbarkeit "Seiten und bedingte Anzeige" {
+  page {
+    agree = Choice("Warst du sicher?", ["ja", "nein"])
+    show(when: agree == {"nein"}) {
+      why = Gap("Was war schwierig?")
+    }
+    on_page = PageOf()
+  }
+  page {
+    later = Gap("Zweite Seite")
+  }
+}

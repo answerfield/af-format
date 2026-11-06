@@ -1,0 +1,131 @@
+{
+  "cases": [
+    {
+      "name": "ablauf",
+      "description": "Teile nacheinander, Seiten und Einträge, Zeitlimit, Freigabe, Pause, nummerierte Befehle, Ende bei Zeitablauf (semantik.md, Abschnitte 12 und 14 „Protokoll“).",
+      "booklet": "heft",
+      "steps": [
+        {
+          "expect": {
+            "position": { "part": 0, "entry": 0 },
+            "current": "heft.teil1.1",
+            "remaining": null,
+            "canPrevious": false,
+            "canNext": false,
+            "atPartEnd": true,
+            "waiting": false
+          }
+        },
+        { "next": true },
+        { "expect": { "position": { "part": 1, "entry": 0 }, "current": "heft_a", "remaining": 600, "canPrevious": false, "canNext": true } },
+        { "advance": 60000 },
+        { "expect": { "remaining": 540 } },
+        { "next": true },
+        { "expect": { "current": "heft_b", "page": 0, "canPrevious": true, "atPartEnd": false } },
+        { "next": true },
+        { "expect": { "current": "heft_b", "page": 1, "atPartEnd": true } },
+        { "previous": true },
+        { "expect": { "current": "heft_b", "page": 0 } },
+        { "previous": true },
+        { "expect": { "current": "heft_a", "position": { "part": 1, "entry": 0 } } },
+        { "goTo": 1 },
+        { "expect": { "current": "heft_b", "page": 0 } },
+        {
+          "expect": {
+            "responses": {
+              "heft_a": { "variables": { "a": { "displayed": true } } },
+              "heft_b": { "variables": { "b": { "displayed": true }, "c": { "displayed": true } } },
+              "heft_c": { "variables": { "d": { "displayed": false } } }
+            },
+            "coding": {
+              "heft_a": { "variables": { "a": { "missing": "omitted" } } },
+              "heft_c": { "variables": { "d": { "missing": "not_reached" } } }
+            }
+          }
+        },
+        { "advance": 540000 },
+        { "expect": { "position": { "part": 2, "entry": 0 }, "current": "heft_c", "waiting": true, "remaining": 300, "canNext": false } },
+        { "advance": 100000 },
+        { "expect": { "remaining": 300, "responses": { "heft_c": { "variables": { "d": { "displayed": false } } } } } },
+        { "control": { "kind": "release", "seq": 1 } },
+        { "advance": 60000 },
+        {
+          "expect": {
+            "waiting": false,
+            "remaining": 240,
+            "canPrevious": false,
+            "responses": { "heft_c": { "variables": { "d": { "displayed": true } } } }
+          }
+        },
+        { "control": { "kind": "pause", "seq": 2 } },
+        { "advance": 60000 },
+        { "expect": { "paused": true, "remaining": 240, "canNext": false } },
+        { "control": { "kind": "resume", "seq": 3 } },
+        { "control": { "kind": "pause", "seq": 3 } },
+        { "expect": { "paused": false } },
+        { "control": { "kind": "extend", "seconds": 60, "seq": 4 } },
+        { "expect": { "remaining": 300 } },
+        { "advance": 300000 },
+        {
+          "expect": {
+            "finished": true,
+            "remaining": null,
+            "log": [
+              "start",
+              { "event": "navigate", "value": "teil2/heft_a" },
+              { "event": "navigate", "value": "teil2/heft_b" },
+              { "event": "timeout", "value": "teil2" },
+              { "event": "part.leave", "value": "teil2" },
+              { "event": "control.release", "value": "teil3" },
+              "control.pause",
+              "control.resume",
+              { "event": "control.extend", "value": { "part": "teil3", "seconds": 60 } },
+              { "event": "timeout", "value": "teil3" },
+              "finish"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "anpassungen",
+      "description": "Studienregeln des Testhefts filtern das Profil; extended_time verlängert die Zeit um den Faktor des Profils (semantik.md, Abschnitte 11 und 12).",
+      "booklet": "heft",
+      "profile": { "display": { "contrast": "high" }, "timing": { "extension": 1.5 } },
+      "steps": [
+        { "next": true },
+        {
+          "expect": {
+            "accommodations": ["extended_time"],
+            "remaining": 900,
+            "responses": { "heft_a": { "accommodations": ["extended_time"] } }
+          }
+        }
+      ]
+    },
+    {
+      "name": "wiederaufnahme",
+      "description": "Position, verbrauchte Zeit und Freigaben überstehen die Wiederaufnahme (semantik.md, Abschnitt 12).",
+      "booklet": "heft",
+      "steps": [
+        { "next": true },
+        { "next": true },
+        { "advance": 120000 },
+        { "emit": { "element": "input", "index": 0 }, "event": "bind", "value": "x" },
+        { "restore": true },
+        {
+          "expect": {
+            "position": { "part": 1, "entry": 1 },
+            "current": "heft_b",
+            "remaining": 480,
+            "responses": { "heft_b": { "variables": { "b": { "value": "x", "changed": true } } } }
+          }
+        },
+        { "advance": 60000 },
+        { "expect": { "remaining": 420 } },
+        { "control": { "kind": "end" } },
+        { "expect": { "finished": true } }
+      ]
+    }
+  ]
+}

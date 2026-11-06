@@ -1,0 +1,42 @@
+// Anpassungen, Varianten, Sprachstufen und Fassungen (semantik.md, Abschnitt 11).
+
+item ohne_einfach "Ausschluss: ohne Einfache Sprache" {
+  deny({simple_language}, reason: "Beispiel: Einfache Sprache verfälscht die Aufgabe")
+  p {
+    "Lies den Text."
+    variant(simple_language) "Lies."
+  }
+  n = Num(of: size(accommodations()))
+}
+
+item stufen "Sprachstufen" {
+  stimulus {
+    p "Auf der Wiese lässt ein Mädchen einen Drachen steigen und hält die Schnur mit beiden Händen fest."
+    variant(simple_language) { p "Auf der Wiese lässt ein Mädchen einen Drachen steigen." }
+    variant(easy_language) {
+      p "Ein Mädchen ist auf der Wiese."
+      p "Sie lässt einen Drachen steigen."
+    }
+  }
+  p {
+    "Wähle eine Antwort."
+    variant(simple_language) "Wähle."
+  }
+  p {
+    "Schau auf das Bild."
+    variant(extended_descriptions) "Ein Mädchen hält einen roten Drachen an einer langen Schnur."
+  }
+  a01 = Choice(wording("Wo lässt das Mädchen den Drachen steigen?", easy: "Wo ist das Mädchen?"),
+               ["auf der Wiese", "am Strand"])
+}
+
+item eier(per_box: Int = 6, boxes: Int = 4) "Eierkarton" {
+  versions(when: per_box in 4 .. 10 and boxes in 2 .. 6 and per_box * boxes <= 50 and per_box != boxes
+                 and (not (easy_language in accommodations()) or per_box * boxes <= 20))
+  p { "In einen Karton passen " per_box " Eier. Es sind " boxes " Kartons." }
+  total = NumberGap("Wie viele Eier sind es?")
+}
+
+coding eier {
+  total: correct(total == per_box * boxes)
+}

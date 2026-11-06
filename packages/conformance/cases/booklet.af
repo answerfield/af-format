@@ -1,0 +1,25 @@
+// Testhefte: Teile, Navigation, Zeit, Testleitung (semantik.md, Abschnitt 12).
+
+item heft_a "Erste" { a = Gap("a") }
+item heft_b "Zweite" {
+  page { b = Gap("b") }
+  page { c = Gap("c") }
+}
+item heft_c "Dritte" { d = Gap("d") }
+
+booklet heft "Heft" {
+  allow({magnification, extended_time})
+  part("Einführung") {
+    instruction("Start") { p "Hallo" }
+  }
+  part("Teil A", time: 10min, navigation: free) {
+    heft_a
+    heft_b
+  }
+  part("Teil B", time: 5min, navigation: forward, start: released) {
+    heft_c
+  }
+}
+
+coding heft_a { a: correct(a == "x") }
+coding heft_c { d: correct(d == "x") }

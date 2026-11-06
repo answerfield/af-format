@@ -1,0 +1,87 @@
+{
+  "cases": [
+    {
+      "name": "missings",
+      "description": "Unbearbeitet: omitted, wenn angezeigt, sonst not_reached; abgeleitete Scores dann 0 (semantik.md, Abschnitt 10 „Regeln“, „Scores“).",
+      "item": "kodierung",
+      "steps": [
+        {
+          "expect": {
+            "coding": {
+              "variables": {
+                "a": { "missing": "omitted" },
+                "b": { "missing": "omitted" },
+                "both": { "missing": "omitted" },
+                "c": { "missing": "omitted" },
+                "inverse": { "missing": "omitted" },
+                "d": { "missing": "not_reached" }
+              },
+              "scores": { "total": 0, "third": 0 }
+            }
+          }
+        },
+        { "page": 1 },
+        { "expect": { "coding": { "variables": { "d": { "missing": "omitted" } } } } }
+      ]
+    },
+    {
+      "name": "codes",
+      "description": "Erster zutreffender Code gilt, sonst Code 0 \"falsch\"; Teilaufgaben; Scores als Zahl (semantik.md, Abschnitte 1, 10 „Regeln“, „Scores“ und 14).",
+      "item": "kodierung",
+      "steps": [
+        { "emit": { "element": "input", "index": 0 }, "event": "bind", "value": "7" },
+        { "emit": { "element": "input", "index": 1 }, "event": "bind", "value": "6/8" },
+        {
+          "expect": {
+            "coding": {
+              "item": "kodierung",
+              "variables": {
+                "a": { "code": 1, "label": "richtig", "score": 1 },
+                "b": { "code": 2, "label": "nicht gekürzt", "score": 1 },
+                "both": { "code": 0, "label": "falsch", "score": 0 },
+                "inverse": { "code": 1, "score": 1 },
+                "c": { "missing": "omitted" }
+              },
+              "scores": { "total": 2, "third": 0.3333333333333333 }
+            }
+          }
+        },
+        { "emit": { "element": "input", "index": 1 }, "event": "bind", "value": "3/4" },
+        { "expect": { "coding": { "variables": { "b": { "code": 1, "score": 2 } }, "scores": { "total": 3 } } } },
+        { "emit": { "element": "input", "index": 1 }, "event": "bind", "value": "0" },
+        {
+          "expect": {
+            "coding": { "variables": { "b": { "code": 0, "label": "falsch" }, "inverse": { "error": "*", "code": null } } }
+          }
+        }
+      ]
+    },
+    {
+      "name": "manuell",
+      "description": "Dreiwertige Bedingungen: offen ohne Urteil (pending), Urteil entscheidet, wo die Automatik schon entscheidet, wird nicht gefragt (semantik.md, Abschnitt 10 „Manuelle Kodierung“).",
+      "item": "kodierung",
+      "steps": [
+        { "emit": { "element": "toggle", "index": 1 }, "event": "check" },
+        {
+          "expect": {
+            "coding": {
+              "variables": {
+                "c": {
+                  "code": null,
+                  "pending": [{ "id": "c: Begründung trifft zu", "criterion": "Begründung trifft zu", "yes": ["weil"], "no": [] }]
+                }
+              }
+            }
+          }
+        },
+        { "judge": { "c: Begründung trifft zu": true } },
+        { "expect": { "coding": { "variables": { "c": { "code": 1, "score": 1, "pending": null } }, "scores": { "total": 1 } } } },
+        { "judge": { "c: Begründung trifft zu": false } },
+        { "expect": { "coding": { "variables": { "c": { "code": 0, "score": 0 } } } } },
+        { "judge": {} },
+        { "emit": { "element": "toggle", "index": 0 }, "event": "check" },
+        { "expect": { "coding": { "variables": { "c": { "code": 0, "pending": null } } } } }
+      ]
+    }
+  ]
+}

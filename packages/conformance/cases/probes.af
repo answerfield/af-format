@@ -1,0 +1,12 @@
+// Probe-Komponenten für die Konformitätstests: Ihre Antwort ist der Wert des Arguments. So landet jeder
+// Ausdruck JSON-kodiert in den Antworten und lässt sich ohne Darstellung vergleichen.
+
+component Num(of: Rational?): response Rational? { response of }
+component Flag(of: Bool): response Bool { response of }
+component Txt(of: Text?): response Text? { response of }
+component Nums(of: Set<Rational>): response Set<Rational> { response of }
+component NumList(of: List<Rational?>): response List<Rational?> { response of }
+component TxtList(of: List<Text>): response List<Text> { response of }
+component Pt(of: Point?): response Point? { response of }
+component Segments(of: Set<List<Point?>>): response Set<List<Point?>> { response of }
+component Rich(of: Content): response Content { response of }

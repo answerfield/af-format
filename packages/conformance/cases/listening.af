@@ -1,0 +1,38 @@
+// Zeit und Medien: Listen (fester Ablauf), Play (selbst starten), timer und flow (semantik.md, Abschnitt 13).
+
+item hoeren "Hören" {
+  Listen(src: "https://example.org/audio/ansage.mp3", plays: 2, prepare: 30s, pause: 10s, finish: 1min)
+  where = Gap("Wohin fährt Jola?")
+  show(when: heard() >= 2) { why = Gap("Warum freut sie sich?") }
+}
+
+item selbst "Selbst starten" {
+  Play(src: "https://example.org/audio/ansage.mp3", plays: 2)
+  where = Gap("Wohin fährt Jola?")
+}
+
+item danach "Im Anschluss" { after = Gap("Danach") }
+
+booklet hoerheft "Hörtest" {
+  part("Hören") {
+    hoeren
+    danach
+  }
+}
+
+component Rechenzeit(duration: Duration, state over: Bool = false) {
+  timer(duration: duration, label: "Bearbeitungszeit", on elapsed: over := true)
+  flow(locked: over)
+}
+
+item zeit "Mit Uhr" {
+  Rechenzeit(duration: 2min)
+  result = Gap("12 · 7 =")
+}
+
+booklet zeitheft "Rechnen auf Zeit" {
+  part("Rechnen") {
+    zeit
+    danach
+  }
+}

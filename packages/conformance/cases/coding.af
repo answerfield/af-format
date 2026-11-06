@@ -1,0 +1,26 @@
+// Kodierung: Codes, Missings, Teilaufgaben, manuelle Fragen, abgeleitete Scores, Fehler (semantik.md, Abschnitt 10).
+
+item kodierung "Kodierung" {
+  page {
+    a = Gap("a")
+    b = Gap("b")
+    c = Choice("c", ["x", "y"])
+  }
+  page {
+    d = Gap("d")
+  }
+}
+
+coding kodierung {
+  a: correct(number(a) == 7)
+  b: codes(
+    code(1, "richtig", score: 2, when: number(b) == 3/4 and is_reduced(b)),
+    code(2, "nicht gekürzt", score: 1, when: number(b) == 3/4)
+  )
+  both: correct(accepted([a, b], ["7", "8"]) == 2)
+  c: correct(c == {"y"} and manual("Begründung trifft zu", yes: ["weil"], about: [d]))
+  inverse: correct(1 / number(b) > 0 or a == "x")
+  d: correct(accept(d, "weil"))
+  total: sum_score(a, b, c)
+  third: sum_score(a) / 3
+}

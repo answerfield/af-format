@@ -1,0 +1,120 @@
+{
+  "cases": [
+    {
+      "name": "zahlen",
+      "description": "Exakte rationale Zahlen, JSON-Kodierung (sichere Ganzzahlen als Zahl, sonst \"a/b\"), none setzt sich fort, Fehler ergeben none (semantik.md, Abschnitte 1, 2, 3 und 14).",
+      "item": "zahlen",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "sum": { "value": "1/2" },
+                "whole": { "value": 2 },
+                "neg": { "value": "-3/4" },
+                "dec": { "value": "3/10" },
+                "half": { "value": "7/2" },
+                "big": { "value": "123456789012345678000" },
+                "safe": { "value": 9007199254740991 },
+                "unsafe": { "value": "9007199254740992" },
+                "product": { "value": "3/2" },
+                "difference": { "value": "-1/4" },
+                "missing": { "value": null },
+                "negmissing": { "value": null },
+                "divzero": { "value": null }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "vergleiche",
+      "description": "Vergleiche mit none sind falsch, == none prüft auf keinen Wert, in für Intervall, Menge und Liste (semantik.md, Abschnitte 2 und 3).",
+      "item": "vergleiche",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "lt": { "value": true },
+                "ge": { "value": true },
+                "eq": { "value": true },
+                "ltnone": { "value": false },
+                "gtnone": { "value": false },
+                "eqnone": { "value": true },
+                "nenone": { "value": true },
+                "ifnone": { "value": 2 },
+                "inrange": { "value": true },
+                "atbound": { "value": true },
+                "outrange": { "value": false },
+                "nonein": { "value": false },
+                "inset": { "value": true },
+                "inlist": { "value": true },
+                "andor": { "value": true }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "sammlungen",
+      "description": "Mengen in kanonischer Reihenfolge und ohne Doppelte, Index ab 1 (außerhalb none), Listenfunktionen (semantik.md, Abschnitte 2, 3 und 4 „Listen, Mengen, Text“).",
+      "item": "sammlungen",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "ordered": { "value": ["1/2", 1, 2, 3] },
+                "dedup": { "value": [2] },
+                "union": { "value": [1, 2, 3] },
+                "diff": { "value": [1, 3] },
+                "seteq": { "value": true },
+                "listeq": { "value": false },
+                "second": { "value": 20 },
+                "beyond": { "value": null },
+                "zeroth": { "value": null },
+                "size_set": { "value": 2 },
+                "size_list": { "value": 2 },
+                "counted": { "value": 2 },
+                "counted_in": { "value": 2 },
+                "repeated": { "value": ["a", "a", "a"] },
+                "replaced": { "value": [1, 9, 3] },
+                "replaced_out": { "value": null }
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "texte",
+      "description": "Textdarstellung von Werten beim Verketten; Inhaltswerte (Auszeichnung, Folge, Bild, Formel) (semantik.md, Abschnitte 2 „Textform“, 3 und 4 „Inhalt“).",
+      "item": "texte",
+      "steps": [
+        {
+          "expect": {
+            "responses": {
+              "variables": {
+                "concat": { "value": "Teil 3" },
+                "fraction": { "value": "a7/2" },
+                "negative": { "value": "n-3/4" },
+                "boolean": { "value": "xwahr" },
+                "point_text": { "value": "p(1 | 2)" },
+                "set_text": { "value": "s{1, 2}" },
+                "list_text": { "value": "l1, 2" },
+                "none_text": { "value": "n" },
+                "marked": { "value": { "content": "emph", "args": { "text": "x" } } },
+                "sequence": { "value": { "content": "seq", "args": { "items": ["a ", { "content": "del", "args": { "text": "b" } }] } } },
+                "picture": { "value": { "content": "image", "args": { "src": "https://example.org/a.png", "alt": "Bild", "width": null } } },
+                "formula": { "value": { "content": "math", "args": { "mathml": "*", "tex": "x^2" } } }
+              }
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
